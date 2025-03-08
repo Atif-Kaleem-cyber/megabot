@@ -26,7 +26,7 @@ if uploaded_file is not None:
 
     # Button to remove NaN values
     if st.button("Remove NaN Values"):
-        df_cleaned = df.dropna()
+        df_cleaned = df.fillna('')
         st.subheader("Data with NaN Values Removed")
         st.write(df_cleaned)
         df = df_cleaned  # Update the dataframe to the cleaned version
