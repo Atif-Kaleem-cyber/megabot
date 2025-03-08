@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from io import BytesIO
 
 # Title of the app
 st.title("CSV Data Cleaning and Visualization App")
@@ -30,9 +31,17 @@ if uploaded_file is not None:
         st.write(df_cleaned)
         df = df_cleaned  # Update the dataframe to the cleaned version
 
-    # Button to save the cleaned data to an XLSX file
+    # Button to save the cleaned data to an XLSX file and provide a download link
     if st.button("Save to XLSX"):
-        df.to_excel("cleaned_data.xlsx", index=False)
+        towrite = BytesIO()
+        df.to_excel(towrite, index=False, engine='xlsxwriter')
+        towrite.seek(0)
+        st.download_button(
+            label="Download XLSX",
+            data=towrite,
+            file_name="cleaned_data.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
         st.success("Data saved to 'cleaned_data.xlsx'")
 
     # Button to visualize the data
